@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Bot Or Not</title>
+        {% if recaptcha_enabled %}
+        <script src="https://www.google.com/recaptcha/api.js?render={{site_key}}"></script>
+        <script>
+            grecaptcha.ready(function() {
+                grecaptcha.execute('{{site_key}}', {action: 'submit'}).then(function(token) {
+                    document.getElementById('g-recaptcha-response').value = token;
+                });
+            });
+        </script>
+        {% endif %}
+        <style>
+            .main_div {
+                margin: 20px;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+            label {
+                font-weight: bold;
+                display: block;
+                margin-bottom: 10px;
+            }
+            textarea {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 20px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+            input[type="submit"] {
+                background-color: blue;
+                color: white;
+                padding: 15px 30px;
+                border: none;
+                border-radius: 5px;
+                font-size: 16px;
+            }
+            .result-text {
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="main_div">
+            <form method="post">
+                <label for="text_to_check">Text to Check:</label>
+                <textarea id="text_to_check" name="text_to_check" rows="4" cols="50"></textarea>
+                <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
+                <input type="submit" value="Submit">
+            </form>
+
+            {% if result_text %}
+            <h3 class="result-text">Result: {{result_text}}</h3>
+            {% endif %}
+        </div>
+    </body>
+</html>
